@@ -14,10 +14,19 @@ Please refer to the [textbooks][Textbooks] for more complete content.
     - [Data Types](#data-types)
     - [Constants](#constants)
     - [What's the difference between data types, data values, and constants?](#what-s-the-difference-between-data-types-data-values-and-constants-)
+    - [Making Our Own Data Definitions](#making-our-own-data-definitions)
+      - [Synonyms](#synonyms)
+      - [Enumerations](#enumerations)
+      - [Structs](#structs)
+        - [Constructors](#constructors)
+        - [Selectors and Predicates](#selectors-and-predicaes)
+        - [Concluding Structs](#concluding-structs)
+      - [Itemizations](#itemizations)
   - [Design Recipe](#design-recipe)
+    - [Data Definitions](#data-definitions)
 
 I recommend that you read over "Basics of Data" to strengthen your foundations.
-The [design recipe](#design-recipe) relies heavily on these concepts.
+Otherwise, [skip to Design Recipe](#design-recipe).
 
 ## Basics of Data
 
@@ -96,10 +105,10 @@ To reiterate:
 For our code to make sense, we must define our own **data types**.
 
 There are 4 main categorizations of data definitions:
-  - Synonyms
-  - Enumerations
-  - Itemizations
-  - Structs
+  - [Synonyms](#synonyms)
+  - [Enumerations](#enumerations)
+  - [Structs](#structs)
+  - [Itemizations](#itemizations)
 
 #### Synonyms
 Synonyms are data definitions where you literally call an existing **data type** by another name.
@@ -209,7 +218,7 @@ Otherwise, the `x` and `y` could have any data type, and it would be harder to d
 
 We do this by saying
 
-     ; A Posn is a (make-posn Number Number)
+    ; A Posn is a (make-posn Number Number)
 
 and that tells us that we want the `x` and `y` to both have the type `Number`.
 
@@ -256,7 +265,7 @@ To retrieve the data inside `Posn` objects, `define-struct` also gives us other 
 The first two functions (called selectors) will output the `x` and `y` values of the given input `Posn` object.
 The last function (called a predicate) takes anything as an input and outputs whether or not the input is a `Posn` object.
 
-##### Conclusion
+##### Concluding Structs
 A of a complete struct data definition looks like:
 
     ; A [DataTypeWeWantToDefine] is a (make-[struct-name] [DataTypesOfFields...])
