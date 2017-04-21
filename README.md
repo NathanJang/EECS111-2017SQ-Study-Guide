@@ -1,11 +1,9 @@
 # Study Guide for [EECS 111, 2017 Spring Quarter][Course Page]
 
-<!--
 TODO:
-[ ] Recursive functions and recursive data definitions
-[ ] Finish writing design recipe section
-[ ] Itemizations section
--->
+- [ ] Recursive functions and recursive data definitions
+- [ ] Finish writing design recipe section
+- [ ] Finish writing itemizations section
 
 [Course Page]: http://users.eecs.northwestern.edu/~jesse/course/eecs111/
 [Textbooks]: http://users.eecs.northwestern.edu/~jesse/course/eecs111/#textbooks
