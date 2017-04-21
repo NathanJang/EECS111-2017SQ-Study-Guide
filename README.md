@@ -4,6 +4,7 @@ TODO:
 - [ ] Recursive functions and recursive data definitions
 - [ ] Finish writing design recipe section
 - [ ] Finish writing itemizations section
+- [ ] Stepwise evaluation
 
 [Course Page]: http://users.eecs.northwestern.edu/~jesse/course/eecs111/
 [Textbooks]: http://users.eecs.northwestern.edu/~jesse/course/eecs111/#textbooks
