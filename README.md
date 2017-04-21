@@ -261,7 +261,7 @@ Therefore, when we say
 ; A Posn is a (make-posn Number Number)
 ```
 
-what we actually mean is that **we're defining the data type `Posn` to be whatever `make-posn` outputs when given 2 inputs `Number`s**.
+what we actually mean is that **we're defining the data type `Posn` to be whatever `make-posn` outputs when given 2 input `Number`s**.
 This lets us generalize and state that `make-posn` is like this instead:
 ```racket
 ; make-posn : Number Number -> Posn
@@ -323,7 +323,7 @@ gives us the functions
 ; household-pet-name : HouseholdPet -> String
 ; household-pet-species : HouseholdPet -> String
 ; household-pet-age : HouseholdPet -> Number
-; household-pet? Any -> Boolean
+; household-pet? : Any -> Boolean
 ```
 
 **Important: As usual, you should name your data types with CamelCase (ByCapitalizingTheFirstLetterOfEveryWord).**
