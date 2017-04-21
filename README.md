@@ -91,8 +91,9 @@ Here are some constants that Racket gave us:
   - `empty` — another name for `'()`
 
 We can define our own constants too:
-
-    (define COURSE-NAME "EECS 111")
+```racket
+(define COURSE-NAME "EECS 111")
+```
 
 will define `COURSE-NAME` as a constant, with the value `"EECS 111"`, of type `String`.
 You can also make constants of any *data value* that you can think of.
@@ -122,17 +123,20 @@ Synonyms are data definitions where you literally call an existing **data type**
 Because it's clearer to read our code if we give a relevant description to all the **data values** we would ever want to consider.
 
 Syntax:
-
-    ; A [DataTypeWeWantToDefine] is a [PreexistingDataType]
+```racket
+; A [DataTypeWeWantToDefine] is a [PreexistingDataType]
+```
 
 Example: We want to make a data type for the first names of people.
 The preexisting data type that makes the most sense is `String`.
-
-    ; A FirstName is a String
+```racket
+; A FirstName is a String
+```
 
 We can do the same with last names too.
-
-    ; A LastName is a String
+```racket
+; A LastName is a String
+```
 
 Once we make those data definitions, we can make statements about following **data values**:
   - We can call `"Jesse"` a `FirstName`; that is, the data value `"Jesse"` has the data type `FirstName`. Although it's technically a `String`, saying that it has the data type `FirstName` can make more sense to the logic in our programs, and we can forget about the fact that it's actually a `String` if it makes our lives easier.
@@ -150,11 +154,12 @@ Because sometimes we want to *list out a finite number of possibilities* and *gr
 This is really helpful when we know all the possibilities of something and need a way to categorize them.
 
 Syntax:
-
-    ; A [DataTypeWeWantToDefine] is one of:
-    ; - ...
-    ; - ...
-    ; - ...
+```racket
+; A [DataTypeWeWantToDefine] is one of:
+; - ...
+; - ...
+; - ...
+```
 
 Example: We want to make a data type for the eye color of people.
 There is a finite number of possibilities:
@@ -172,12 +177,13 @@ We can give **data values** to all of these possibilities:
 
 and then group these into a new **data type**.
 Let's call ours `EyeColor`.
-
-    ; An EyeColor is one of:
-    ; - "black"
-    ; - "brown"
-    ; - "blue"
-    ; - "green"
+```racket
+; An EyeColor is one of:
+; - "black"
+; - "brown"
+; - "blue"
+; - "green"
+```
 
 That's the data definition!
 
@@ -196,24 +202,26 @@ This makes our coding cleaner, more intuitive, and less prone to mistakes.
 Remember when I [wrote about `Posn`](#data-values)?
 A `Posn` is actually a struct.
 Here's how it would be defined under the hood\*:
-
-    ; A Posn is a (make-posn Number Number)
-    (define-struct posn (x y))
-    ; interp. `x` is the x-coordinate of the position, and
-    ; `y` is the y-coordinate of the position
+```racket
+; A Posn is a (make-posn Number Number)
+(define-struct posn (x y))
+; interp. `x` is the x-coordinate of the position, and
+; `y` is the y-coordinate of the position
+```
 
 <sup>\* It's actually more complicated; I just simplified.</sup>
 
 Let's break it down:
-
-    (define-struct [name-of-struct] ([names-of-fields...]))
-
+```racket
+(define-struct [name-of-struct] ([names-of-fields...]))
+```
 is a special syntax that makes you a struct.
 `[name-of-struct]` is where you put the name of your struct, and `[names-of-fields...]` is where you put the names of the data values inside.
 
 So,
-
-    (define-struct posn (x y))
+```racket
+(define-struct posn (x y))
+```
 
 means we're defining a struct called `posn` and giving it two compartments to put stuff in: `x` and `y`.
 
@@ -222,16 +230,16 @@ We need to define what **data types** `x` and `y` are.
 Otherwise, the `x` and `y` could have any data type, and it would be harder to do anything useful with this struct without constraining the data types it contains.
 
 We do this by saying
-
-    ; A Posn is a (make-posn Number Number)
-
+```racket
+; A Posn is a (make-posn Number Number)
+```
 and that tells us that we want the `x` and `y` to both have the type `Number`.
 
 Finally, we say
-
-    ; interp. `x` is the x-coordinate of the position, and
-    ; `y` is the y-coordinate of the position
-
+```racket
+; interp. `x` is the x-coordinate of the position, and
+; `y` is the y-coordinate of the position
+```
 so we know what `x` and `y` represent when we use this data type.
 
 Our `Posn` data definition is now complete.
@@ -241,76 +249,82 @@ But wait!
 What does `(make-posn ...)` mean in our data definition?
 
 When we said `(define-struct posn (x y))`, it magically gave us this function (called a constructor):
-
-    ; make-posn : Any Any -> ??
-
+```racket
+; make-posn : Any Any -> ??
+```
 `make-posn` is a function that takes 2 inputs of any type, and outputs some data value.
 However, **we don't know what the output data type is**, and we can't do anything useful with this unless we **define our data types**.
 **A `define-struct` statement is not enough for a data definition.**
 
 Therefore, when we say
-
-    ; A Posn is a (make-posn Number Number)
+```racket
+; A Posn is a (make-posn Number Number)
+```
 
 what we actually mean is that **we're defining the data type `Posn` to be whatever `make-posn` outputs when given 2 inputs `Number`s**.
 This lets us generalize and state that `make-posn` is like this instead:
-
-    ; make-posn : Number Number -> Posn
+```racket
+; make-posn : Number Number -> Posn
+```
 
 The `make-posn` function, when given 2 input `Number`s, will always output a data value whose type is `Posn`.
 To correctly use the `posn` struct, we must always give 2 input `Number`s to `make-posn`.
 
 ##### Selectors and Predicates
 To retrieve the data inside `Posn` objects, `define-struct` also gives us other functions:
-
-    ; posn-x : Posn -> Number
-    ; posn-y : Posn -> Number
-    ; posn? : Any -> Boolean
+```racket
+; posn-x : Posn -> Number
+; posn-y : Posn -> Number
+; posn? : Any -> Boolean
+```
 
 The first two functions (called selectors) will output the `x` and `y` values of the given input `Posn` object.
 The last function (called a predicate) takes anything as an input and outputs whether or not the input is a `Posn` object.
 
 ##### Concluding Structs
 A of a complete struct data definition looks like:
-
-    ; A [DataTypeWeWantToDefine] is a (make-[struct-name] [DataTypesOfFields...])
-    (define-struct [name-of-struct] ([names-of-fields...]))
-    ; interp. `name-of-field1` is ...
-    ; `name-of-field2` is ...
-    ; `name-of-field3` is ...
-    ; ...
+```racket
+; A [DataTypeWeWantToDefine] is a (make-[struct-name] [DataTypesOfFields...])
+(define-struct [name-of-struct] ([names-of-fields...]))
+; interp. `name-of-field1` is ...
+; `name-of-field2` is ...
+; `name-of-field3` is ...
+; ...
+```
 
 Examples of complete struct data definitions:
 
 `Posn`:
-
-    ; A Posn is a (make-posn Number Number)
-    (define-struct posn (x y))
-    ; interp. `x` is the x-coordinate of the position, and
-    ; `y` is the y-coordinate of the position
-
+```racket
+; A Posn is a (make-posn Number Number)
+(define-struct posn (x y))
+; interp. `x` is the x-coordinate of the position, and
+; `y` is the y-coordinate of the position
+```
 gives us the functions
-
-    ; make-posn : Number Number -> Posn
-    ; posn-x : Posn -> Number
-    ; posn-y : Posn -> Number
-    ; posn? : Any -> Boolean
+```racket
+; make-posn : Number Number -> Posn
+; posn-x : Posn -> Number
+; posn-y : Posn -> Number
+; posn? : Any -> Boolean
+```
 
 `HouseholdPet`:
-
-    ; A HouseholdPet is a (make-household-pet String String Number)
-    (define-struct household-pet (name species age))
-    ; interp. `name` is the name of the pet,
-    ; `species` is the name of the species, and
-    ; `age` is the age of the pet in years
-
+```racket
+; A HouseholdPet is a (make-household-pet String String Number)
+(define-struct household-pet (name species age))
+; interp. `name` is the name of the pet,
+; `species` is the name of the species, and
+; `age` is the age of the pet in years
+```
 gives us the functions
-
-    ; make-household-pet : String String Number -> HouseholdPet
-    ; household-pet-name : HouseholdPet -> String
-    ; household-pet-species : HouseholdPet -> String
-    ; household-pet-age : HouseholdPet -> Number
-    ; household-pet? Any -> Boolean
+```racket
+; make-household-pet : String String Number -> HouseholdPet
+; household-pet-name : HouseholdPet -> String
+; household-pet-species : HouseholdPet -> String
+; household-pet-age : HouseholdPet -> Number
+; household-pet? Any -> Boolean
+```
 
 **Important: As usual, you should name your data types with CamelCase (ByCapitalizingTheFirstLetterOfEveryWord).**
 **However, the name of your struct itself should be lowercase-and-separated-with-hyphens.**
