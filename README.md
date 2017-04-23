@@ -1,5 +1,7 @@
 # Study Guide for [EECS 111, 2017 Spring Quarter][Course Page]
 
+**THIS DOCUMENT IS NOT FINISHED! Hopefully it will be by Tuesday, but read at your own risk.**
+
 TODO:
 - [ ] Recursive functions and recursive data definitions
 - [ ] Finish writing design recipe section
@@ -332,7 +334,7 @@ gives us the functions
 This is just so we're consistent with naming functions and data types.
 
 ### Itemizations
-
+TODO
 
 ## Design Recipe
 Functions are a thing in Racket that takes input *data values* and gives out an output *data value*.
@@ -348,4 +350,4 @@ There are 6 steps in the design recipe:
 
 You should follow these 6 steps when designing functions.
 
-### Data Definitions
+TODO: Details
