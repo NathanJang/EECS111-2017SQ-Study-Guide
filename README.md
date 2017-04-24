@@ -634,7 +634,7 @@ Then, we copy and paste the template, rename our function, and fill in the **bod
     [(>= number-grade 80) "B"]
     [(>= number-grade 70) "C"]
     [(>= number-grade 60) "D"]
-    [(>= number-grade 0) "E"]))
+    [(>= number-grade 0) "F"]))
 ```
 
 #### Structural Decomposition
