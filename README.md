@@ -549,13 +549,14 @@ I call this template function `make-solid-or-outline-shape`.
       ...)) ; no, it's not solid
 
 ;; or, equivalently,
+#;
 (define (make-solid-or-outline-shape is-solid?)
   (cond
     [is-solid? ...] ; yes, it's solid
     [else ...])) ; no, it's not solid
 ```
 
-Then, we can fill out the **body** of our function, by replacing the `...`s with the appropriate code.
+Then, we can fill out the **body** of our function, by copying and pasting the template, renaming our function, and replacing the `...`s with the appropriate code.
 
 ```racket
 (define (make-red-circle is-solid?)
