@@ -404,8 +404,8 @@ To receive full credit, you must use the design recipe to write functions.
 There are 6 steps in the design recipe:
   1. [Data Definitions](#data-definitions)
   2. [Signature, Purpose, and Header](#signature-purpose-and-header)
-  3. Examples
-  4. Strategy
+  3. [Examples](#examples)
+  4. [Strategy](#strategy)
   5. Body
   6. Testing
 
@@ -430,18 +430,20 @@ Then, you can come up with the **signature** of the function, which looks like:
 Examples of existing functions (simplified):
 ```racket
 ;; `+` takes two Numbers and outputs a Numbers
+
 ; + : Number Number -> Number
 ...
 
-;; `circle` takes a Number, an OutlineMode, and a Color, and outputs an Image
+;; `rectangle` takes two Numbers, an OutlineMode, and a Color, and outputs an Image
 ;; where OutlineMode is an enumeration of "solid" or "outline", and
 ;; Color is a predefined struct data definition
-; circle : Number OutlineMode Color -> Image
+
+; rectangle : Number Number OutlineMode Color -> Image
 ...
 ```
 In these cases, the signatures of these functions are:
 - `; + : Number Number -> Number`
-- `; circle : Number OutlineMode Color -> Image`
+- `; rectangle : Number Number OutlineMode Color -> Image`
 
 Then, underneath the signature of your function, you should include a **purpose** of your function, a comment on what this function does.
 
@@ -451,7 +453,60 @@ The combined signatures and purposes of the above functions would be:
 ; Adds up all numbers.
 ...
 
-; circle : Number OutlineMode Color -> Image
-; Constructs a circle with the given radius, mode, and color.
+; rectangle : Number Number OutlineMode Color -> Image
+; Constructs a rectangle with the given width, height, mode, and color.
 ...
 ```
+
+Finally, write the **header** of your function, which simply looks like:
+```racket
+(define ([name-of-function] [input-arguments...])
+  ...)
+```
+You can just write this first without worrying about what to put inside the function itself, and this in itself will get you partial credit.
+```racket
+; + : Number Number -> Number
+; Adds up all numbers.
+(define (+ x y)
+  ...)
+
+; rectangle : Number Number OutlineMode Color -> Image
+; Constructs a rectangle with the given width, height, mode, and color.
+(define (rectangle width height outline-mode color)
+  ...)
+```
+
+### Examples
+Underneath your purpose, you should provide examples of outputs your function will yield, given example inputs.
+```racket
+; + : Number Number -> Number
+; Adds up all numbers.
+; Examples:
+; - (+ 1 1) -> 2
+; - (+ 1 -1) -> 0
+; - (+ 0 188999) -> 118999
+(define (+ x y)
+  ...)
+
+; circle : Number OutlineMode Color -> Image
+; Constructs a rectangle with the given width, height, mode, and color.
+; Examples:
+; - (rectangle 100 100 "solid" "red") ->
+```
+
+![](Square-100-Solid-Red.png)
+
+```racket
+; - (rectangle 200 100 "outline" "black") -> a 200x100 rectangle with a black outline and no fill
+; - ... (it's kinda hard to do image examples here but you get the idea)
+(define (rectangle width height outline-mode color)
+  ...)
+```
+
+### Strategy
+The strategies the professor gives you are:
+- Decision Tree
+- Structural Decomposition
+- Interval Decomposition
+- Function Composition
+- Domain Knowledge
