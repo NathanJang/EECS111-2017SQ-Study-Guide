@@ -33,6 +33,13 @@ Please refer to the [textbooks][Textbooks] for more complete content.
   - [Design Recipe](#design-recipe)
     - [Data Definitions](#data-definitions)
     - [Signature, Purpose, and Header](#signature-purpose-and-header)
+    - [Examples](#examples)
+    - [Strategy](#strategy)
+      - [Decision Tree](#decision-tree)
+      - [Interval Decomposition](#interval-decomposition)
+      - [Structural Decomposition](#structural-decomposition)
+      - [Function Composition](#function-composition)
+      - [Domain Knowledge](#domain-knowledge)
 
 I recommend that you read over "Basics of Data" to strengthen your foundations.
 Otherwise, [skip to Design Recipe](#design-recipe).
@@ -504,9 +511,73 @@ Underneath your purpose, you should provide examples of outputs your function wi
 ```
 
 ### Strategy
+A strategy is a method with which your function processes data.
+
 The strategies the professor gives you are:
-- Decision Tree
-- Structural Decomposition
-- Interval Decomposition
-- Function Composition
-- Domain Knowledge
+- [Decision Tree](#decision-tree)
+- [Interval Decomposition](#interval-decomposition)
+- [Structural Decomposition](#structural-decomposition)
+- [Function Composition](#function-composition)
+- [Domain Knowledge](#domain-knowledge)
+
+#### Decision Tree
+A function using the decision tree strategy makes decisions on what to do based on the input data.
+With Racket, it generally looks like a `cond` statement or `if` statements.
+
+Example: A function that draws a circle either solid or outline.
+Below is our signature, purpose, header, and strategy.
+```racket
+; make-red-circle : Boolean -> Image
+; Constructs a red circle with radius 100, solid if the input is `true`, and outline if the input is `false`.
+; Examples:
+; - ...
+; Strategy: Decision Tree
+(define (make-red-circle is-solid?)
+  ...)
+```
+
+First, you would want to make a template of this strategy.
+You would do this by thinking about what decision we want to make within the function.
+In this case, we are deciding what to do between with the input parameter.
+I call this template function `make-solid-or-outline-shape`.
+
+```racket
+#;
+(define (make-solid-or-outline-shape is-solid?)
+  (if is-solid?
+      ... ; yes, it's solid
+      ...)) ; no, it's not solid
+
+;; or, equivalently,
+(define (make-solid-or-outline-shape is-solid?)
+  (cond
+    [is-solid? ...] ; yes, it's solid
+    [else ...])) ; no, it's not solid
+```
+
+Then, we can fill out the **body** of our function, by replacing the `...`s with the appropriate code.
+
+```racket
+(define (make-red-circle is-solid?)
+  (if is-solid?
+      (circle 100 "solid" "red")
+      (circle 100 "outline" "red")))
+
+;; or, equivalently,
+(define (make-red-circle is-solid?)
+  (cond
+    [is-solid? (circle 100 "solid" "red")]
+    [else (circle 100 "outline" "red")]))
+```
+
+#### Interval Decomposition
+TODO
+
+#### Structural Decomposition
+TODO
+
+#### Function Composition
+TODO
+
+#### Domain Knowledge
+TODO
