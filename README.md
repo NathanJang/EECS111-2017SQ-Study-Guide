@@ -578,7 +578,7 @@ Example: We want a function that turns a number grade into a letter grade.
 
 Data definitions:
 ```racket
-; A NumberGrade is one of:
+; A NumberGrade falls in the ranges:
 ; - [0,60)
 ; - [60,70)
 ; - [70,80)
@@ -637,8 +637,69 @@ Then, we copy and paste the template, rename our function, and fill in the **bod
     [(>= number-grade 0) "F"]))
 ```
 
+Another example:
+```racket
+; number-grade-passing? : NumberGrade -> Boolean
+; Determines whether a NumberGrade is a passing grade.
+; Examples:
+; - (number-grade-passing? 55) -> #false
+; - (number-grade-passing? 70) -> #true
+(define (number-grade-passing? number-grade)
+  (cond
+    [(>= number-grade 60) #true]
+    [else #false]))
+```
+or, more succintly,
+```racket
+(define (number-grade-passing? number-grade)
+  (>= number-grade 60))
+```
+This would also fall under interval decomposition.
+
 #### Structural Decomposition
-TODO
+Structural decomposition is another special case of decision tree, where the conditions we use are based on the *structure of our data*, or in other words, the **data type** that we are dealing with.
+
+##### Structural Decomposition with Enumerations
+In our template, we would want to account for all possible values in the enumeration.
+
+Using our [`LetterGrade` example](#interval-decomposition) as an input to a function, our template would look like:
+```racket
+#;
+(define (process-letter-grade letter-grade)
+  (cond
+    [(string=? letter-grade "A") ...]
+    [(string=? letter-grade "B") ...]
+    [(string=? letter-grade "C") ...]
+    [(string=? letter-grade "D") ...]
+    [(string=? letter-grade "F") ...]))
+```
+
+Writing a function to convert a `LetterGrade` to the lower bound of the related `NumberGrade`,
+```racket
+; grade/letter->number-lower-bound : LetterGrade -> NumberGrade
+; Takes a LetterGrade and returns the lower bound of its associated NumberGrade.
+; Examples:
+; - (grade/letter->number-lower-bound "A") -> 90
+; - (grade/letter->number-lower-bound "C") -> 70
+(define (grade/letter->number-lower-bound letter-grade)
+  ...)
+```
+
+We copy and paste the template, rename our function, and fill in the **body**:
+```racket
+; grade/letter->number-lower-bound : LetterGrade -> NumberGrade
+; Takes a LetterGrade and returns the lower bound of its associated NumberGrade.
+; Examples:
+; - (grade/letter->number-lower-bound "A") -> 90
+; - (grade/letter->number-lower-bound "C") -> 70
+(define (grade/letter->number-lower-bound letter-grade)
+  (cond
+    [(string=? letter-grade "A") 90]
+    [(string=? letter-grade "B") 80]
+    [(string=? letter-grade "C") 70]
+    [(string=? letter-grade "D") 60]
+    [(string=? letter-grade "F") 0]))
+```
 
 #### Function Composition
 TODO
