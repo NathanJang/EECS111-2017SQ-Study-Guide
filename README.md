@@ -572,7 +572,70 @@ Then, we can fill out the **body** of our function, by copying and pasting the t
 ```
 
 #### Interval Decomposition
-TODO
+Interval decomposition is a special case of decision tree, where the conditions you deal with are based on number intervals.
+
+Example: We want a function that turns a number grade into a letter grade.
+
+Data definitions:
+```racket
+; A NumberGrade is one of:
+; - [0,60)
+; - [60,70)
+; - [70,80)
+; - [80,90)
+; - [90,∞)
+
+; A LetterGrade is one of:
+; - "A"
+; - "B"
+; - "C"
+; - "D"
+; - "F"
+```
+
+Signature, purpose, header, examples:
+```racket
+; grade/number->letter : NumberGrade -> LetterGrade
+; Converts a numeric grade to a letter grade.
+; Examples:
+; - (grade/number->letter 0) -> "F"
+; - (grade/number->letter 95) -> "A"
+; - (grade/number->letter 60) -> "D"
+; Strategy: Interval Decomposition
+(define (grade/number->letter number-grade)
+  ...)
+```
+
+We use the strategy of interval decomposition.
+We make a template function to account for all of the intervals that the `NumberGrade` falls into:
+```racket
+#;
+(define (process-number-grade number-grade)
+  (cond
+    [(>= number-grade 90) ...]
+    [(>= number-grade 80) ...]
+    [(>= number-grade 70) ...]
+    [(>= number-grade 60) ...]
+    [(>= number-grade 0) ...]))
+```
+
+Then, we copy and paste the template, rename our function, and fill in the **body** of our function:
+```racket
+; grade/number->letter : NumberGrade -> LetterGrade
+; Converts a numeric grade to a letter grade.
+; Examples:
+; - (grade/number->letter 0) -> "F"
+; - (grade/number->letter 95) -> "A"
+; - (grade/number->letter 60) -> "D"
+; Strategy: Interval Decomposition
+(define (grade/number->letter number-grade)
+  (cond
+    [(>= number-grade 90) "A"]
+    [(>= number-grade 80) "B"]
+    [(>= number-grade 70) "C"]
+    [(>= number-grade 60) "D"]
+    [(>= number-grade 0) "E"]))
+```
 
 #### Structural Decomposition
 TODO
