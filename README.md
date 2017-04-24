@@ -701,6 +701,29 @@ We copy and paste the template, rename our function, and fill in the **body**:
     [(string=? letter-grade "F") 0]))
 ```
 
+##### Structural Decomposition with Structs
+In our template, we would want to process all the fields of our input structure.
+With our [previously used `posn` struct](#structs), our template would look like:
+```racket
+#;
+(define (process-posn posn ...)
+  ... (posn-x posn) ...
+  ... (posn-y posn) ...)
+```
+
+Example: A function that calculates the distance of a `Posn` from the origin:
+```racket
+; distance-to-origin : Posn -> Number
+; Calculates the distance of a Posn from the origin. (sqrt(x^2 + y^2))
+; Examples:
+; - (distance-to-origin (make-posn 1 0)) -> 1
+; - (distance-to-origin (make-posn 1 1)) -> 1.414213562373095
+; Strategy: Structural Decomposition
+(define (distance-to-origin posn)
+  (sqrt (+ (sqr (posn-x posn))
+           (sqr (posn-y posn)))))
+```
+
 ##### Structural Decomposition with Itemizations
 In our template, we would want to account for all the different data types associated with our itemization data type.
 Using our previous data definitions from ["Itemizations"](#itemizations),
