@@ -543,14 +543,14 @@ I call this template function `make-solid-or-outline-shape`.
 
 ```racket
 #;
-(define (make-solid-or-outline-shape is-solid?)
+(define (make-solid-or-outline-shape is-solid? ...)
   (if is-solid?
       ... ; yes, it's solid
       ...)) ; no, it's not solid
 
 ;; or, equivalently,
 #;
-(define (make-solid-or-outline-shape is-solid?)
+(define (make-solid-or-outline-shape is-solid? ...)
   (cond
     [is-solid? ...] ; yes, it's solid
     [else ...])) ; no, it's not solid
@@ -610,7 +610,7 @@ We use the strategy of interval decomposition.
 We make a template function to account for all of the intervals that the `NumberGrade` falls into:
 ```racket
 #;
-(define (process-number-grade number-grade)
+(define (process-number-grade number-grade ...)
   (cond
     [(>= number-grade 90) ...]
     [(>= number-grade 80) ...]
@@ -665,7 +665,7 @@ In our template, we would want to account for all possible values in the enumera
 Using our [`LetterGrade` example](#interval-decomposition) as an input to a function, our template would look like:
 ```racket
 #;
-(define (process-letter-grade letter-grade)
+(define (process-letter-grade letter-grade ...)
   (cond
     [(string=? letter-grade "A") ...]
     [(string=? letter-grade "B") ...]
@@ -676,29 +676,82 @@ Using our [`LetterGrade` example](#interval-decomposition) as an input to a func
 
 Writing a function to convert a `LetterGrade` to the lower bound of the related `NumberGrade`,
 ```racket
-; grade/letter->number-lower-bound : LetterGrade -> NumberGrade
+; lower-bound-of-letter-grade : LetterGrade -> NumberGrade
 ; Takes a LetterGrade and returns the lower bound of its associated NumberGrade.
 ; Examples:
-; - (grade/letter->number-lower-bound "A") -> 90
-; - (grade/letter->number-lower-bound "C") -> 70
-(define (grade/letter->number-lower-bound letter-grade)
+; - (lower-bound-of-letter-grade "A") -> 90
+; - (lower-bound-of-letter-grade "C") -> 70
+(define (lower-bound-of-letter-grade letter-grade)
   ...)
 ```
 
 We copy and paste the template, rename our function, and fill in the **body**:
 ```racket
-; grade/letter->number-lower-bound : LetterGrade -> NumberGrade
+; lower-bound-of-letter-grade : LetterGrade -> NumberGrade
 ; Takes a LetterGrade and returns the lower bound of its associated NumberGrade.
 ; Examples:
-; - (grade/letter->number-lower-bound "A") -> 90
-; - (grade/letter->number-lower-bound "C") -> 70
-(define (grade/letter->number-lower-bound letter-grade)
+; - (lower-bound-of-letter-grade "A") -> 90
+; - (lower-bound-of-letter-grade "C") -> 70
+(define (lower-bound-of-letter-grade letter-grade)
   (cond
     [(string=? letter-grade "A") 90]
     [(string=? letter-grade "B") 80]
     [(string=? letter-grade "C") 70]
     [(string=? letter-grade "D") 60]
     [(string=? letter-grade "F") 0]))
+```
+
+##### Structural Decomposition with Itemizations
+In our template, we would want to account for all the different data types associated with our itemization data type.
+Using our previous data definitions from ["Itemizations"](#itemizations),
+```racket
+; A LivingSpace is one of:
+; - ResidentialHall
+; - ResidentialCollege
+; - "off-campus"
+
+; A ResidentialHall is a (make-residential-hall String String)
+(define-struct residential-hall (name address))
+; interp. `name` is the name of the res hall, and
+; `address` is the street address
+; Examples:
+; - (make-residential-hall "Bobb-McCollough" "2305 Sheridan Road")
+
+; A ResidentialCollege is a (make-residential-college String String String)
+(define-struct residential-college (name address theme))
+; interp. `name` is the name of the res college,
+; `address` is the street address, and
+; `theme` is the theme of the res college
+; Examples:
+; - (make-residential-college "Slivka" "2332 Campus Drive" "engineering")
+```
+
+Our template for a function that takes a `LivingSpace` as an input would have to check for the different associated data types, like `ResidentialHall` and `ResidentialCollege`.
+Remember the predicate functions that `define-struct` gives us?
+We would have to use those to check the type.
+```racket
+#;
+(define (process-living-space living-space ...)
+  (cond
+    [(residential-hall? living-space) ...]
+    [(residential-college? living-space ...)
+    [(string=? living-space "off-campus") ...]]))
+```
+
+Then, to write a function that outputs the name of a `LivingSpace`, it would look something like this:
+```racket
+; living-space-name : LivingSpace -> String
+; Outputs the name of a LivingSpace.
+; Examples:
+; - (living-space-name (make-residential-hall "Bobb-McCollough" "2305 Sheridan Road")) -> "Bobb-McCollough"
+; - (living-space-name (make-residential-college "Slivka" "2332 Campus Drive" "engineering")) -> "Slivka"
+; - (living-space-name "off-campus") -> "off-campus"
+; Strategy: Structural Decomposition
+(define (living-space-name living-space)
+  (cond
+    [(residential-hall? living-space) (residential-hall-name living-space)]
+    [(residential-college? living-space (residential-college-name living-space))
+    [(string=? living-space "off-campus") "off-campus"]]))
 ```
 
 #### Function Composition
