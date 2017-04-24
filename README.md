@@ -5,7 +5,7 @@
 TODO:
 - [ ] Recursive functions and recursive data definitions
 - [ ] Finish writing design recipe section
-- [ ] Finish writing itemizations section
+- [X] Finish writing itemizations section
 - [ ] Stepwise evaluation
 
 [Course Page]: http://users.eecs.northwestern.edu/~jesse/course/eecs111/
@@ -334,7 +334,65 @@ gives us the functions
 This is just so we're consistent with naming functions and data types.
 
 ### Itemizations
-TODO
+Itemizations are like [enumerations](#enumerations), but instead of listing out a finite number of *data values*, you can also list **data types**.
+
+**Why would we want to do this?**
+Because sometimes you want to use different data types as function outputs, in order to represent different outcomes.
+
+Example: We have a person struct and we need a data type to represent the height of a person.
+```racket
+; An OptionalHeight is one of:
+; - Number
+; - #false
+
+; A Person is a (make-person String OptionalHeight)
+(define-struct person (name height))
+; interp. `name` is the name of the person, and
+; `height` is the height of the person in centimeters, and `#false` if not specified
+; Examples:
+; - (make-person "Justin Jackson" 180)
+; - (make-person "Ant Man" #false)
+```
+Here, we don't know Ant Man's height, so we can't represent it with just a `Number`.
+The `OptionalHeight` data type lets us do this by putting in `#false` to indicate this.
+
+We can also use itemizations to group together similar data types.
+
+Example: We want a data type to represent places where students at Northwestern live.
+```racket
+; A LivingSpace is one of:
+; - ResidentialHall
+; - ResidentialCollege
+; - "off-campus"
+
+; A ResidentialHall is a (make-residential-hall String String)
+(define-struct residential-hall (name address))
+; interp. `name` is the name of the res hall, and
+; `address` is the street address
+; Examples:
+; - (make-residential-hall "Bobb-McCollough" "2305 Sheridan Road")
+
+; A ResidentialCollege is a (make-residential-college String String String)
+(define-struct residential-college (name address theme))
+; interp. `name` is the name of the res college,
+; `address` is the street address, and
+; `theme` is the theme of the res college
+; Examples:
+; - (make-residential-college "Slivka" "2332 Campus Drive" "engineering")
+```
+If we have this data definition, then the data values
+
+- `(make-residential-hall "Bobb-McCollough" "2305 Sheridan Road")`
+- `(make-residential-college "Slivka" "2332 Campus Drive" "engineering")`
+- `"off-campus"`
+
+can all belong to the data type `LivingSpace`.
+If we were to design a function that takes a `LivingSpace` as an input, then it must be able to handle all of these values.
+Conversely, if we were to design a function that outputs a `LivingSpace`, it could output all of these values.
+
+**Important: As usual, you should name your data types with CamelCase (ByCapitalizingTheFirstLetterOfEveryWord).**
+**However, the name of your struct itself should be lowercase-and-separated-with-hyphens.**
+This is just so we're consistent with naming functions and data types.
 
 ## Design Recipe
 Functions are a thing in Racket that takes input *data values* and gives out an output *data value*.
