@@ -32,6 +32,7 @@ Please refer to the [textbooks][Textbooks] for more complete content.
       - [Itemizations](#itemizations)
   - [Design Recipe](#design-recipe)
     - [Data Definitions](#data-definitions)
+    - [Signature, Purpose, and Header](#signature-purpose-and-header)
 
 I recommend that you read over "Basics of Data" to strengthen your foundations.
 Otherwise, [skip to Design Recipe](#design-recipe).
@@ -251,7 +252,7 @@ Our `Posn` data definition is now complete.
 But wait!
 What does `(make-posn ...)` mean in our data definition?
 
-When we said `(define-struct posn (x y))`, it magically gave us this function (called a constructor):
+When we said `(define-struct posn (x y))`, it magically gave us this function (called a constructor), with the [signature](#signature-purpose-and-header):
 ```racket
 ; make-posn : Any Any -> ??
 ```
@@ -354,7 +355,9 @@ Example: We have a person struct and we need a data type to represent the height
 ; - (make-person "Ant Man" #false)
 ```
 Here, we don't know Ant Man's height, so we can't represent it with just a `Number`.
-The `OptionalHeight` data type lets us do this by putting in `#false` to indicate this.
+The `OptionalHeight` data type lets us do this by putting in `#false` to indicate this.\*
+
+<sup>\* In practice you'd want to use `'()` or `empty` to represent a nonexsistent value, but I'm just using `#false` because it's more familiar.</sup>
 
 We can also use itemizations to group together similar data types.
 
@@ -399,8 +402,8 @@ Functions are a thing in Racket that takes input *data values* and gives out an 
 To receive full credit, you must use the design recipe to write functions.
 
 There are 6 steps in the design recipe:
-  1. Data Definitions
-  2. Signature, Purpose, and Header
+  1. [Data Definitions](#data-definitions)
+  2. [Signature, Purpose, and Header](#signature-purpose-and-header)
   3. Examples
   4. Strategy
   5. Body
@@ -408,4 +411,47 @@ There are 6 steps in the design recipe:
 
 You should follow these 6 steps when designing functions.
 
-TODO: Details
+### Data Definitions
+See the section ["Making Our Own Data Definitions"](#making-our-own-data-definitions).
+You should define all the data types that you want to use involving this function.
+
+### Signature, Purpose, and Header
+Before you even start writing the function itself, consider the input types and output type of the function.
+- What do you want to name this function?
+- How many input arguments does it take?
+- What data types are these arguments?
+- What data type does the function output?
+
+Then, you can come up with the **signature** of the function, which looks like:
+```racket
+; [name-of-function] : [TypesOfInputs...] -> TypeOfOutput
+```
+
+Examples of existing functions (simplified):
+```racket
+;; `+` takes two Numbers and outputs a Numbers
+; + : Number Number -> Number
+...
+
+;; `circle` takes a Number, an OutlineMode, and a Color, and outputs an Image
+;; where OutlineMode is an enumeration of "solid" or "outline", and
+;; Color is a predefined struct data definition
+; circle : Number OutlineMode Color -> Image
+...
+```
+In these cases, the signatures of these functions are:
+- `; + : Number Number -> Number`
+- `; circle : Number OutlineMode Color -> Image`
+
+Then, underneath the signature of your function, you should include a **purpose** of your function, a comment on what this function does.
+
+The combined signatures and purposes of the above functions would be:
+```racket
+; + : Number Number -> Number
+; Adds up all numbers.
+...
+
+; circle : Number OutlineMode Color -> Image
+; Constructs a circle with the given radius, mode, and color.
+...
+```
