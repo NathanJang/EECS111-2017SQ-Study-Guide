@@ -1,13 +1,5 @@
 # Study Guide for [EECS 111, 2017 Spring Quarter][Course Page]
 
-**THIS DOCUMENT IS NOT FINISHED! Hopefully it will be by Tuesday, but read at your own risk.**
-
-TODO:
-- [X] Recursive functions and recursive data definitions
-- [ ] Finish writing design recipe section
-- [X] Finish writing itemizations section
-- [ ] Stepwise evaluation
-
 [Course Page]: http://users.eecs.northwestern.edu/~jesse/course/eecs111/
 [Textbooks]: http://users.eecs.northwestern.edu/~jesse/course/eecs111/#textbooks
 [Racket]: https://racket-lang.org
@@ -34,12 +26,13 @@ Please refer to the [textbooks][Textbooks] for more complete content.
     - [Data Definitions](#data-definitions)
     - [Signature, Purpose, and Header](#signature-purpose-and-header)
     - [Examples](#examples)
-    - [Strategy](#strategy)
+    - [Strategy and Body](#strategy-and-body)
       - [Decision Tree](#decision-tree)
       - [Interval Decomposition](#interval-decomposition)
       - [Structural Decomposition](#structural-decomposition)
       - [Function Composition](#function-composition)
-      - [Domain Knowledge](#domain-knowledge)
+    - [Testing](#testing)
+  - [Stepwise Evaluation](#stepwise-evaluation)
 
 I recommend that you read over "Basics of Data" to strengthen your foundations.
 Otherwise, [skip to Design Recipe](#design-recipe).
@@ -439,9 +432,9 @@ There are 6 steps in the design recipe:
   1. [Data Definitions](#data-definitions)
   2. [Signature, Purpose, and Header](#signature-purpose-and-header)
   3. [Examples](#examples)
-  4. [Strategy](#strategy)
+  4. [Strategy](#strategy-and-body)
   5. Body
-  6. Testing
+  6. [Testing](#testing)
 
 You should follow these 6 steps when designing functions.
 
@@ -537,7 +530,7 @@ Underneath your purpose, you should provide examples of outputs your function wi
   ...)
 ```
 
-### Strategy
+### Strategy and Body
 A strategy is a method with which your function processes data.
 
 The strategies the professor gives you are:
@@ -545,7 +538,7 @@ The strategies the professor gives you are:
 - [Interval Decomposition](#interval-decomposition)
 - [Structural Decomposition](#structural-decomposition)
 - [Function Composition](#function-composition)
-- [Domain Knowledge](#domain-knowledge)
+- Domain Knowledge
 
 #### Decision Tree
 A function using the decision tree strategy makes decisions on what to do based on the input data.
@@ -862,6 +855,7 @@ We'll call this function `closest-loner-name`.
 ; Loops through the given person's best friend chain, and outputs the name of the person down the list who has no best friend.
 ; Examples:
 ; - (closest-loner-name (make-friend "John Watson" (make-friend "Sherlock Holmes" empty))) -> "Sherlock Holmes"
+; - Strategy: Structural Decomposition
 ```
 We plug in the template, and rename the function:
 ```racket
@@ -869,6 +863,7 @@ We plug in the template, and rename the function:
 ; Loops through the given person's best friend chain, and outputs the name of the person down the list who has no best friend.
 ; Examples:
 ; - (closest-loner-name (make-friend "John Watson" (make-friend "Sherlock Holmes" empty))) -> "Sherlock Holmes"
+; - Strategy: Structural Decomposition
 (define (closest-loner-name friend)
   ... (friend-name friend) ...
   ... (if (empty? (friend-best-friend friend))
@@ -882,6 +877,7 @@ Reading the function description again, we want to output the name of this perso
 ; Loops through the given person's best friend chain, and outputs the name of the person down the list who has no best friend.
 ; Examples:
 ; - (closest-loner-name (make-friend "John Watson" (make-friend "Sherlock Holmes" empty))) -> "Sherlock Holmes"
+; - Strategy: Structural Decomposition
 (define (closest-loner-name friend)
   ... (friend-name friend) ...
   ... (if (empty? (friend-best-friend friend))
@@ -894,6 +890,7 @@ Finally, looking at all the ellipses, there is nothing else that we need to cons
 ; Loops through the given person's best friend chain, and outputs the name of the person down the list who has no best friend.
 ; Examples:
 ; - (closest-loner-name (make-friend "John Watson" (make-friend "Sherlock Holmes" empty))) -> "Sherlock Holmes"
+; - Strategy: Structural Decomposition
 (define (closest-loner-name friend)
   (if (empty? (friend-best-friend friend))
       (friend-name friend) ; THIS PERSON IS A LONER, so output his or her name
@@ -905,7 +902,80 @@ Here, if we know that this person has a best friend, we break it down and call `
 Finally, we know that `closest-loner-name` always outputs a `String`, so it doesn't matter that the function outputs the result of a recursive call to `closest-loner-name`.
 
 #### Function Composition
-TODO
+Function composition simply takes other functions and pieces them together.
 
-#### Domain Knowledge
-TODO
+Example:
+```racket
+; mean : Number Number -> Number
+; Returns the mean of two numbers.
+; Strategy: Function Composition
+; (Takes the `+` function and the `/` function and composes them into a `mean` function.)
+(define (mean a b)
+  (/ (+ a b) 2))
+```
+
+## Testing
+Finally, after you finish writing your function body, you should write tests for that function.
+
+- Use `(check-expect expression expected-expression)` to check for equal values.
+- Use `(check-within expression expected-expression delta)` to check that a value is within the expected value, differing by less than `delta`.
+
+Sometimes, if the function is simple enough, you can replace [examples](#examples) with tests.
+However, for more complicated functions, you may want to separate examples and tests.
+The examples are for helping to see what the expected outputs are for given inputs, while tests are for actually testing whether the function performs as expected.
+Once you start writing more complicated functions, tests will become more complicated too, making it harder for you to see what the expected outputs actually are if you use check-expects as examples.
+
+That's it for the design recipe!
+
+# Stepwise Evaluation
+Stepwise evaluation is how Racket evaluates functions.
+In each step, you take an expression and you manipulate it into something else to get you closer to the final result.
+There are a few different types of steps to evaluate the result of a function:
+
+- A plug step is when you replace a function call with the whole function itself, while replacing variables with actual values.
+- A cond step is when you look at a boolean and remove branches of code that will not be run.
+- An arithmetic step is when you replace predefined Racket functions (like `+`, `equal?`, etc.) with their results.
+
+Here is an example of stepwise evaluation.
+Given these function definitions:
+```racket
+(define (signum x)
+  (cond
+    [(positive? x) 1]
+    [(negative? x) -1]
+    [else          0]))
+
+(define (my-abs x)
+  (* x (signum x)))
+```
+Here is how Racket evaluates `(my-abs -8)` to `8`:
+```racket
+(my-abs -8)
+;; -[plug]->
+(* -8 (signum -8))
+;; -[plug]->
+(* -8 (cond
+        [(positive? -8) 1]
+        [(negative? -8) -1]
+        [else          0]))
+;; -[arith]->
+(* -8 (cond
+        [#false         1]
+        [(negative? -8) -1]
+        [else           0]))
+;; -[cond]->
+(* -8 (cond
+        [(negative? -8) -1]
+        [else           0]))
+;; -[arith]->
+(* -8 (cond
+        [#true -1]
+        [else  0]))
+;; -[cond]->
+(* -8 -1)
+;; -[arith]->
+8
+```
+
+**Why would we want to do this?**
+It helps us understand how Racket runs functions.
