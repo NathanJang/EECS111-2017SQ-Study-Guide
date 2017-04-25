@@ -35,8 +35,9 @@ Please refer to the [textbooks][Textbooks] for more complete content.
   - [Stepwise Evaluation](#stepwise-evaluation)
   - [FAQ](#faq)
     - [How do I add quotation marks inside a `String`?](#how-do-i-add-quotation-marks-inside-a-string)
+    - [Why do we need backslashes to escape quotation marks inside a `String`?](#why-do-we-need-backslashes-to-escape-quotation-marks-inside-a-string)
     - [What are the code style conventions?](#what-are-the-code-style-conventions)
-    - [What is an arithmetic step in stepwise evaluation?](what-is-an-arithmetic-step-in-stepwise-evaluation)
+    - [What is an arithmetic step in stepwise evaluation?](#what-is-an-arithmetic-step-in-stepwise-evaluation)
 
 I recommend that you read over "Basics of Data" to strengthen your foundations.
 Otherwise, [skip to Design Recipe](#design-recipe).
