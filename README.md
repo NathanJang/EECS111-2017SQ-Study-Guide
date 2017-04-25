@@ -300,7 +300,8 @@ Consider the following data definition, which represents a person who has a best
 ; A Friend is a (make-friend String OptionalFriend)
 (define-struct friend (name best-friend))
 ; interp. `name` is the name of the person we're representing, and
-; `best-friend` is another Friend object which represents this person's best friend
+; `best-friend` is another Friend object which represents this person's best
+; friend
 ```
 This is a recursive data type, because the `Friend` data type has a field which is another `Friend` object.
 
@@ -464,7 +465,8 @@ Examples of existing functions (simplified):
 ; + : Number Number -> Number
 ...
 
-;; `rectangle` takes two Numbers, an OutlineMode, and a Color, and outputs an Image
+;; `rectangle` takes two Numbers, an OutlineMode, and a Color, and outputs an
+;; Image
 ;; where OutlineMode is an enumeration of "solid" or "outline", and
 ;; Color is a predefined struct data definition
 
@@ -527,7 +529,8 @@ Underneath your purpose, you should provide examples of outputs your function wi
 ![](Square-100-Solid-Red.png)
 
 ```racket
-; - (rectangle 200 100 "outline" "black") -> a 200x100 rectangle with a black outline and no fill
+; - (rectangle 200 100 "outline" "black") -> a 200x100 rectangle with a black
+;   outline and no fill
 ; - ... (it's kinda hard to do image examples here but you get the idea)
 (define (rectangle width height outline-mode color)
   ...)
@@ -551,7 +554,8 @@ Example: A function that draws a circle either solid or outline.
 Below is our signature, purpose, header, and strategy.
 ```racket
 ; make-red-circle : Boolean -> Image
-; Constructs a red circle with radius 100, solid if the input is `true`, and outline if the input is `false`.
+; Constructs a red circle with radius 100, solid if the input is `true`, and
+; outline if the input is `false`.
 ; Examples:
 ; - ...
 ; Strategy: Decision Tree
@@ -801,8 +805,12 @@ Then, to write a function that outputs the name of a `LivingSpace`, we can remov
 ; living-space-name : LivingSpace -> String
 ; Outputs the name of a LivingSpace.
 ; Examples:
-; - (living-space-name (make-residential-hall "Bobb-McCollough" "2305 Sheridan Road")) -> "Bobb-McCollough"
-; - (living-space-name (make-residential-college "Slivka" "2332 Campus Drive" "engineering")) -> "Slivka"
+; - (living-space-name
+      (make-residential-hall "Bobb-McCollough" "2305 Sheridan Road"))
+      -> "Bobb-McCollough"
+; - (living-space-name
+      (make-residential-college "Slivka" "2332 Campus Drive" "engineering"))
+      -> "Slivka"
 ; - (living-space-name "off-campus") -> "off-campus"
 ; Strategy: Structural Decomposition
 (define (living-space-name living-space)
@@ -848,30 +856,40 @@ And finally, we'd want to account for the fact that actually, `(friend-best-frie
   ... (friend-name friend) ...
   ... (if (empty? (friend-best-friend friend))
           ... ; Do something once we know that this person has no best friend
-          ... (process-friend (friend-best-friend friend) ...) ...)) ; Otherwise, recursively call `process-friend` again to process this person's best friend too
+          ; Otherwise, recursively call `process-friend` again to process this
+          ; person's best friend too
+          ... (process-friend (friend-best-friend friend) ...) ...))
 ```
 
 Example: Given a person, we want to go through this person's best friend, and then his or her best friend, and so on, until we find a person with no best friend, and output his or her name.
 We'll call this function `closest-loner-name`.
 ```racket
 ; closest-loner-name : Friend -> String
-; Loops through the given person's best friend chain, and outputs the name of the person down the list who has no best friend.
+; Loops through the given person's best friend chain, and outputs the name of
+; the person down the list who has no best friend.
 ; Examples:
-; - (closest-loner-name (make-friend "John Watson" (make-friend "Sherlock Holmes" empty))) -> "Sherlock Holmes"
+; - (closest-loner-name (make-friend "John Watson"
+                                     (make-friend "Sherlock Holmes" empty)))
+      -> "Sherlock Holmes"
 ; - Strategy: Structural Decomposition
 ```
 We plug in the template, and rename the function:
 ```racket
 ; closest-loner-name : Friend -> String
-; Loops through the given person's best friend chain, and outputs the name of the person down the list who has no best friend.
+; Loops through the given person's best friend chain, and outputs the name of
+; the person down the list who has no best friend.
 ; Examples:
-; - (closest-loner-name (make-friend "John Watson" (make-friend "Sherlock Holmes" empty))) -> "Sherlock Holmes"
+; - (closest-loner-name (make-friend "John Watson"
+                                     (make-friend "Sherlock Holmes" empty)))
+      -> "Sherlock Holmes"
 ; - Strategy: Structural Decomposition
 (define (closest-loner-name friend)
   ... (friend-name friend) ...
   ... (if (empty? (friend-best-friend friend))
           ... ; Do something once we know that this person has no best friend
-          ... (closest-loner-name (friend-best-friend friend)) ...)) ; Otherwise, recursively call `closest-loner-name` again to process this person's best friend too
+          ; Otherwise, recursively call `closest-loner-name` again to process
+          ; this person's best friend too
+          ... (closest-loner-name (friend-best-friend friend)) ...))
 ```
 Now, we just have to think about what to fill in.
 Reading the function description again, we want to output the name of this person if we know he or she has no best friend, so we code that in:
@@ -879,25 +897,35 @@ Reading the function description again, we want to output the name of this perso
 ; closest-loner-name : Friend -> String
 ; Loops through the given person's best friend chain, and outputs the name of the person down the list who has no best friend.
 ; Examples:
-; - (closest-loner-name (make-friend "John Watson" (make-friend "Sherlock Holmes" empty))) -> "Sherlock Holmes"
+; - (closest-loner-name (make-friend "John Watson"
+                                     (make-friend "Sherlock Holmes" empty)))
+      -> "Sherlock Holmes"
 ; - Strategy: Structural Decomposition
 (define (closest-loner-name friend)
   ... (friend-name friend) ...
   ... (if (empty? (friend-best-friend friend))
-          (friend-name friend) ; THIS PERSON IS A LONER, so output his or her name
-          ... (closest-loner-name (friend-best-friend friend)) ...)) ; Otherwise, recursively call `closest-loner-name` again to process this person's best friend too
+          ; THIS PERSON IS A LONER, so output his or her name
+          (friend-name friend)
+          ; Otherwise, recursively call `closest-loner-name` again to process
+          ; this person's best friend too
+          ... (closest-loner-name (friend-best-friend friend)) ...))
 ```
 Finally, looking at all the ellipses, there is nothing else that we need to consider, so we can delete things that we don't need:
 ```racket
 ; closest-loner-name : Friend -> String
-; Loops through the given person's best friend chain, and outputs the name of the person down the list who has no best friend.
+; Loops through the given person's best friend chain, and outputs the name of
+; the person down the list who has no best friend.
 ; Examples:
-; - (closest-loner-name (make-friend "John Watson" (make-friend "Sherlock Holmes" empty))) -> "Sherlock Holmes"
+; - (closest-loner-name (make-friend "John Watson"
+                                     (make-friend "Sherlock Holmes" empty)))
+      -> "Sherlock Holmes"
 ; - Strategy: Structural Decomposition
 (define (closest-loner-name friend)
   (if (empty? (friend-best-friend friend))
-      (friend-name friend) ; THIS PERSON IS A LONER, so output his or her name
-      (closest-loner-name (friend-best-friend friend)))) ; Otherwise, PROCESS THE BEST FRIEND to see if they are a loner too
+      ; THIS PERSON IS A LONER, so output his or her name
+      (friend-name friend)
+      ; Otherwise, PROCESS THE BEST FRIEND to see if they are a loner too
+      (closest-loner-name (friend-best-friend friend))))
 ```
 
 The key to recursion is that we break down our inputs and simplify it, then defer additional logic to subsequent calls of the same function.
@@ -912,7 +940,8 @@ Example:
 ; mean : Number Number -> Number
 ; Returns the mean of two numbers.
 ; Strategy: Function Composition
-; (Takes the `+` function and the `/` function and composes them into a `mean` function.)
+; (Takes the `+` function and the `/` function
+; and composes them into a `mean` function.)
 (define (mean a b)
   (/ (+ a b) 2))
 ```
