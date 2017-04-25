@@ -1050,7 +1050,7 @@ It helps us understand how Racket runs functions.
 ## FAQ
 ### How do I add quotation marks inside a `String`?
 We can use the backslash `\` character to escape characters inside `Strings` by putting them before special characters.
-For example, the string of characters `"If you eliminate the impossible," Spock asserted, "whatever remains, however improbable, must be the truth."`, you would just stick backslashes before each quotation:
+For example, the string of characters `"Existence is pain to a Meeseeks!"`, you would just stick backslashes before each quotation:
 ```racket
 (define QUOTE "\"Existence is pain to a Meeseeks!\"")
 ```
