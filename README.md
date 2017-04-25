@@ -36,6 +36,7 @@ Please refer to the [textbooks][Textbooks] for more complete content.
   - [FAQ](#faq)
     - [How do I add quotation marks inside a `String`?](#how-do-i-add-quotation-marks-inside-a-string)
     - [What are the code style conventions?](#what-are-the-code-style-conventions)
+    - [What is an arithmetic step in stepwise evaluation?](what-is-an-arithmetic-step-in-stepwise-evaluation)
 
 I recommend that you read over "Basics of Data" to strengthen your foundations.
 Otherwise, [skip to Design Recipe](#design-recipe).
@@ -1054,8 +1055,42 @@ For example, the string of characters `"If you eliminate the impossible," Spock 
 ```
 and this will be a valid `String` in Racket.
 
+### Why do we need backslashes to escape quotation marks inside a `String`?
+
+The syntax for writing a string literal in BSL is a sequence of characters enclosed by a pair of double quotes.
+Note that, however, the content of the string literal writtin down are the characters enclosed in the double
+quotes, not including the double quotes themselves. For example, the string literal below
+
+```racket
+  "Fred Brooks: \"The Mythical Man-Month\" (1975)"
+; ^                                              ^
+;   double quotes enclosing a sequence of characters
+```
+
+contains the following character sequence:
+
+|   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| F | r | e | d |   | B | r | o | o | k | s | : |   | " | T | h | e | M | y | t | h | i | c | a | l | M | a | n | - | M | o | n | t | h | " |   | ( | 1 | 9 | 7 | 5 | ) |
+
+To avoid confusing the closing double qoute (the one after `1975)` and the double quotes that are part of
+the content of the string literal (the ones around the title of the book), we need to use a special escape
+character to *represent* double quotes which are part of the string literal, `\"`.
+
+In BSL, there is no function for printing a string in the interaction window. DrRacket displays a string
+literal in the interaction window in the same way as one would write a string literal in the definition
+window. However, in Advanced Student Language, there is a function `display` that *prints* the content
+of a string instead of displaying the *representation* of the string literal itself:
+
+![printing string literal](String-Double-Quote.png)
+(printing a string literal)
+
 ### What are the code style conventions?
 - All lines are at most 80 characters long.
 - All lines are properly indented, including texts in the comments.
 - Function names, argument names and constant names (if any) are all meaningful.
 - Datatype names are capitalized. constants names are all upper cases. Function names and arguments are all lower cases, using dashes '-' to separate words.
+
+### What is an arithmetic step in stepwise evaluation?
+
+In our context, an arithmetic step has a broader meaning that just performing artihmetic on numbers. As described in [How to Design Program Section 1](http://www.ccs.neu.edu/home/matthias/HtDP2e/part_one.html#%28part._ch~3abasic-arithmetic%29), an arithmetic step is how one manipulate the values in a data type by some built-in operation. For example, the arithmetic of numbers includes addition and multiplication; the arithmetic of strings includes `string-append` and `substring`; the arithmetic of images includes `place-image` and `overlay/xy`. This also includes the [arithmetic of structs](#structs) that lets one construct a value of a struct through its constructor and extracts one of the fields through its selectors.
