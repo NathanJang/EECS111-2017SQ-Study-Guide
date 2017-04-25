@@ -33,6 +33,7 @@ Please refer to the [textbooks][Textbooks] for more complete content.
       - [Function Composition](#function-composition)
     - [Testing](#testing)
   - [Stepwise Evaluation](#stepwise-evaluation)
+  - [FAQ](#faq)
 
 I recommend that you read over "Basics of Data" to strengthen your foundations.
 Otherwise, [skip to Design Recipe](#design-recipe).
@@ -979,3 +980,12 @@ Here is how Racket evaluates `(my-abs -8)` to `8`:
 
 **Why would we want to do this?**
 It helps us understand how Racket runs functions.
+
+## FAQ
+### How do I add quotation marks inside a `String`?
+We can use the backslash `\` character to escape characters inside `Strings` by putting them before special characters.
+For example, the string of characters `"If you eliminate the impossible," Spock asserted, "whatever remains, however improbable, must be the truth."`, you would just stick backslashes before each quotation:
+```racket
+(define SMARTASS-QUOTE "\"If you eliminate the impossible,\" Spock asserted, \"whatever remains, however improbable, must be the truth.\"")
+```
+and this will be a valid `String` in Racket.
