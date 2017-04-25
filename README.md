@@ -806,11 +806,11 @@ Then, to write a function that outputs the name of a `LivingSpace`, we can remov
 ; Outputs the name of a LivingSpace.
 ; Examples:
 ; - (living-space-name
-      (make-residential-hall "Bobb-McCollough" "2305 Sheridan Road"))
-      -> "Bobb-McCollough"
+;     (make-residential-hall "Bobb-McCollough" "2305 Sheridan Road"))
+;     -> "Bobb-McCollough"
 ; - (living-space-name
-      (make-residential-college "Slivka" "2332 Campus Drive" "engineering"))
-      -> "Slivka"
+;     (make-residential-college "Slivka" "2332 Campus Drive" "engineering"))
+;     -> "Slivka"
 ; - (living-space-name "off-campus") -> "off-campus"
 ; Strategy: Structural Decomposition
 (define (living-space-name living-space)
@@ -869,8 +869,8 @@ We'll call this function `closest-loner-name`.
 ; the person down the list who has no best friend.
 ; Examples:
 ; - (closest-loner-name (make-friend "John Watson"
-                                     (make-friend "Sherlock Holmes" empty)))
-      -> "Sherlock Holmes"
+;                                    (make-friend "Sherlock Holmes" empty)))
+;     -> "Sherlock Holmes"
 ; - Strategy: Structural Decomposition
 ```
 We plug in the template, and rename the function:
@@ -880,8 +880,8 @@ We plug in the template, and rename the function:
 ; the person down the list who has no best friend.
 ; Examples:
 ; - (closest-loner-name (make-friend "John Watson"
-                                     (make-friend "Sherlock Holmes" empty)))
-      -> "Sherlock Holmes"
+;                                    (make-friend "Sherlock Holmes" empty)))
+;     -> "Sherlock Holmes"
 ; - Strategy: Structural Decomposition
 (define (closest-loner-name friend)
   ... (friend-name friend) ...
@@ -898,8 +898,8 @@ Reading the function description again, we want to output the name of this perso
 ; Loops through the given person's best friend chain, and outputs the name of the person down the list who has no best friend.
 ; Examples:
 ; - (closest-loner-name (make-friend "John Watson"
-                                     (make-friend "Sherlock Holmes" empty)))
-      -> "Sherlock Holmes"
+;                                    (make-friend "Sherlock Holmes" empty)))
+;     -> "Sherlock Holmes"
 ; - Strategy: Structural Decomposition
 (define (closest-loner-name friend)
   ... (friend-name friend) ...
@@ -917,8 +917,8 @@ Finally, looking at all the ellipses, there is nothing else that we need to cons
 ; the person down the list who has no best friend.
 ; Examples:
 ; - (closest-loner-name (make-friend "John Watson"
-                                     (make-friend "Sherlock Holmes" empty)))
-      -> "Sherlock Holmes"
+;                                    (make-friend "Sherlock Holmes" empty)))
+;     -> "Sherlock Holmes"
 ; - Strategy: Structural Decomposition
 (define (closest-loner-name friend)
   (if (empty? (friend-best-friend friend))
@@ -931,6 +931,39 @@ Finally, looking at all the ellipses, there is nothing else that we need to cons
 The key to recursion is that we break down our inputs and simplify it, then defer additional logic to subsequent calls of the same function.
 Here, if we know that this person has a best friend, we break it down and call `closest-loner-name` again, but with the next friend down the line.
 Finally, we know that `closest-loner-name` always outputs a `String`, so it doesn't matter that the function outputs the result of a recursive call to `closest-loner-name`.
+
+Another example:
+```racket
+; A Parent is one of:
+; - Meeseeks
+; - empty
+
+; A Meeseeks is a (make-meeseeks String Parent)
+(define-struct meeseeks (purpose parent))
+; interp. `purpose` is this Meeseek's singular purpose, and
+; `parent` is the Meeseeks who spawned this Meeseeks, if exists.
+
+#;
+(define (process-meeseeks meeseeks ...)
+  ... (meeseeks-purpose meeseeks) ...
+  ... (if (empty? (meeseeks-parent meeseeks))
+          ...
+          ... (process-meeseeks (meeseeks-parent meeseeks) ...)))
+
+; ultimate-purpose : Meeseeks -> String
+; Looks through the Meeseeks chain and finds the first Meeseeks who spawned
+; everyone, and outputs that Meeseeks's purpose.
+; Examples:
+; - (ultimate-purpose (make-meeseeks "Focus on Jerry's short game"
+;                                    (make-meeseeks "Take 2 swings off Jerry's game"
+;                                                   empty)))
+;     -> "Take 2 swings off Jerry's game"
+; Strategy: Structural Decomposition
+(define (ultimate-purpose meeseeks)
+  (if (empty? (meeseeks-parent meeseeks))
+      (meeseeks-purpose meeseeks)
+      (ultimate-purpose (meeseeks-parent meeseeks))))
+```
 
 #### Function Composition
 Function composition simply takes other functions and pieces them together.
@@ -1017,7 +1050,7 @@ It helps us understand how Racket runs functions.
 We can use the backslash `\` character to escape characters inside `Strings` by putting them before special characters.
 For example, the string of characters `"If you eliminate the impossible," Spock asserted, "whatever remains, however improbable, must be the truth."`, you would just stick backslashes before each quotation:
 ```racket
-(define SMARTASS-QUOTE "\"If you eliminate the impossible,\" Spock asserted, \"whatever remains, however improbable, must be the truth.\"")
+(define QUOTE "\"Existence is pain to a Meeseeks!\"")
 ```
 and this will be a valid `String` in Racket.
 
