@@ -3,7 +3,7 @@
 **THIS DOCUMENT IS NOT FINISHED! Hopefully it will be by Tuesday, but read at your own risk.**
 
 TODO:
-- [ ] Recursive functions and recursive data definitions
+- [X] Recursive functions and recursive data definitions
 - [ ] Finish writing design recipe section
 - [X] Finish writing itemizations section
 - [ ] Stepwise evaluation
@@ -291,6 +291,33 @@ To retrieve the data inside `Posn` objects, `define-struct` also gives us other 
 
 The first two functions (called selectors) will output the `x` and `y` values of the given input `Posn` object.
 The last function (called a predicate) takes anything as an input and outputs whether or not the input is a `Posn` object.
+
+##### Recursive Data Types
+In some cases, we want to reference a struct within itself.
+
+Consider the following data definition, which represents a person who has a best friend:
+```racket
+; An OptionalFriend is one of:
+; - Friend
+; - empty
+
+; A Friend is a (make-friend String OptionalFriend)
+(define-struct friend (name best-friend))
+; interp. `name` is the name of the person we're representing, and
+; `best-friend` is another Friend object which represents this person's best friend
+```
+This is a recursive data type, because the `Friend` data type has a field which is another `Friend` object.
+
+Example usage:
+```racket
+(define SHERLOCK
+        (make-friend "Sherlock Holmes" empty)) ; Sherlock has no friends
+(define WATSON
+        (make-friend "John Watson" SHERLOCK)) ; Watson's best friend is Sherlock
+
+(friend-best-friend WATSON) ; outputs the value of SHERLOCK
+(friend-name (friend-best-friend WATSON)) ; outputs "Sherlock Holmes"
+```
 
 ##### Concluding Structs
 A of a complete struct data definition looks like:
@@ -757,11 +784,23 @@ We would have to use those to check the type.
 (define (process-living-space living-space ...)
   (cond
     [(residential-hall? living-space) ...]
-    [(residential-college? living-space ...)
-    [(string=? living-space "off-campus") ...]]))
+    [(residential-college? living-space) ...]
+    [(string=? living-space "off-campus") ...]))
+```
+We would also want to structurally decompose of each of the data types we're considering, e.g., the [structural decomposition of structs](#structural-decomposition-with-structs).
+```racket
+#;
+(define (process-living-space living-space ...)
+  (cond
+    [(residential-hall? living-space) ... (residential-hall-name living-space) ...
+                                      ... (residential-hall-address living-space) ...]
+    [(residential-college? living-space) ... (residential-college-name living-space) ...
+                                         ... (residential-college-address living-space) ...
+                                         ... (residential-college-theme living-space) ...]
+    [(string=? living-space "off-campus") ...]))
 ```
 
-Then, to write a function that outputs the name of a `LivingSpace`, it would look something like this:
+Then, to write a function that outputs the name of a `LivingSpace`, we can remove the things we're not considering, and it would look something like this:
 ```racket
 ; living-space-name : LivingSpace -> String
 ; Outputs the name of a LivingSpace.
@@ -776,6 +815,94 @@ Then, to write a function that outputs the name of a `LivingSpace`, it would loo
     [(residential-college? living-space (residential-college-name living-space))
     [(string=? living-space "off-campus") "off-campus"]]))
 ```
+
+##### Structural Decomposition with [Recursive Data Types](#recursive-data-types)
+This is similar to [structural decomposition with structs](#structural-decomposition-with-structs).
+However, since our data type references itself, our template function also has to call itself.
+
+Consider our [data defition of the `Friend` data type](#recursive-data-types):
+```racket
+; An OptionalFriend is one of:
+; - Friend
+; - empty
+
+; A Friend is a (make-friend String OptionalFriend)
+(define-struct friend (name best-friend))
+; interp. `name` is the name of the person we're representing, and
+; `best-friend` is another Friend object which represents this person's best friend
+```
+To write a function that outputs a `Friend`, we can start by writing a template that structurally decomposes the struct:
+```racket
+#;
+(define (process-friend friend ...)
+  ... (friend-name friend) ...
+  ... (friend-best-friend friend) ...)
+```
+But, if we know that the `(friend-best-friend friend)` has the data type `Friend`, we can make this function call itself to process that value:
+```racket
+#;
+(define (process-friend friend ...)
+  ... (friend-name friend) ...
+  ... (process-friend (friend-best-friend friend) ...) ...)
+```
+And finally, we'd want to account for the fact that actually, `(friend-best-friend friend)` is `empty`, so we check for that in our template:
+```racket
+#;
+(define (process-friend friend ...)
+  ... (friend-name friend) ...
+  ... (if (empty? (friend-best-friend friend))
+          ... ; Do something once we know that this person has no best friend
+          ... (process-friend (friend-best-friend friend) ...) ...)) ; Otherwise, recursively call `process-friend` again to process this person's best friend too
+```
+
+Example: Given a person, we want to go through this person's best friend, and then his or her best friend, and so on, until we find a person with no best friend, and output his or her name.
+We'll call this function `closest-loner-name`.
+```racket
+; closest-loner-name : Friend -> String
+; Loops through the given person's best friend chain, and outputs the name of the person down the list who has no best friend.
+; Examples:
+; - (closest-loner-name (make-friend "John Watson" (make-friend "Sherlock Holmes" empty))) -> "Sherlock Holmes"
+```
+We plug in the template, and rename the function:
+```racket
+; closest-loner-name : Friend -> String
+; Loops through the given person's best friend chain, and outputs the name of the person down the list who has no best friend.
+; Examples:
+; - (closest-loner-name (make-friend "John Watson" (make-friend "Sherlock Holmes" empty))) -> "Sherlock Holmes"
+(define (closest-loner-name friend)
+  ... (friend-name friend) ...
+  ... (if (empty? (friend-best-friend friend))
+          ... ; Do something once we know that this person has no best friend
+          ... (closest-loner-name (friend-best-friend friend)) ...)) ; Otherwise, recursively call `closest-loner-name` again to process this person's best friend too
+```
+Now, we just have to think about what to fill in.
+Reading the function description again, we want to output the name of this person if we know he or she has no best friend, so we code that in:
+```racket
+; closest-loner-name : Friend -> String
+; Loops through the given person's best friend chain, and outputs the name of the person down the list who has no best friend.
+; Examples:
+; - (closest-loner-name (make-friend "John Watson" (make-friend "Sherlock Holmes" empty))) -> "Sherlock Holmes"
+(define (closest-loner-name friend)
+  ... (friend-name friend) ...
+  ... (if (empty? (friend-best-friend friend))
+          (friend-name friend) ; THIS PERSON IS A LONER, so output his or her name
+          ... (closest-loner-name (friend-best-friend friend)) ...)) ; Otherwise, recursively call `closest-loner-name` again to process this person's best friend too
+```
+Finally, looking at all the ellipses, there is nothing else that we need to consider, so we can delete things that we don't need:
+```racket
+; closest-loner-name : Friend -> String
+; Loops through the given person's best friend chain, and outputs the name of the person down the list who has no best friend.
+; Examples:
+; - (closest-loner-name (make-friend "John Watson" (make-friend "Sherlock Holmes" empty))) -> "Sherlock Holmes"
+(define (closest-loner-name friend)
+  (if (empty? (friend-best-friend friend))
+      (friend-name friend) ; THIS PERSON IS A LONER, so output his or her name
+      (closest-loner-name (friend-best-friend friend)))) ; Otherwise, PROCESS THE BEST FRIEND to see if they are a loner too
+```
+
+The key to recursion is that we break down our inputs and simplify it, then defer additional logic to subsequent calls of the same function.
+Here, if we know that this person has a best friend, we break it down and call `closest-loner-name` again, but with the next friend down the line.
+Finally, we know that `closest-loner-name` always outputs a `String`, so it doesn't matter that the function outputs the result of a recursive call to `closest-loner-name`.
 
 #### Function Composition
 TODO
