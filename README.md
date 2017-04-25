@@ -35,6 +35,7 @@ Please refer to the [textbooks][Textbooks] for more complete content.
   - [Stepwise Evaluation](#stepwise-evaluation)
   - [FAQ](#faq)
     - [How do I add quotation marks inside a `String`?](#how-do-i-add-quotation-marks-inside-a-string)
+    - [What are the code style conventions?](#what-are-the-code-style-conventions)
 
 I recommend that you read over "Basics of Data" to strengthen your foundations.
 Otherwise, [skip to Design Recipe](#design-recipe).
@@ -990,3 +991,9 @@ For example, the string of characters `"If you eliminate the impossible," Spock 
 (define SMARTASS-QUOTE "\"If you eliminate the impossible,\" Spock asserted, \"whatever remains, however improbable, must be the truth.\"")
 ```
 and this will be a valid `String` in Racket.
+
+### What are the code style conventions?
+- All lines are at most 80 characters long.
+- All lines are properly indented, including texts in the comments.
+- Function names, argument names and constant names (if any) are all meaningful.
+- Datatype names are capitalized. constants names are all upper cases. Function names and arguments are all lower cases, using dashes '-' to separate words.
