@@ -38,6 +38,7 @@ Please refer to the [textbooks][Textbooks] for more complete content.
     - [Why do we need backslashes to escape quotation marks inside a `String`?](#why-do-we-need-backslashes-to-escape-quotation-marks-inside-a-string)
     - [What are the code style conventions?](#what-are-the-code-style-conventions)
     - [What is an arithmetic step in stepwise evaluation?](#what-is-an-arithmetic-step-in-stepwise-evaluation)
+    - [Is there going to be recursion on the first test?](#is-there-going-to-be-recursion-on-the-first-test)
 
 I recommend that you read over "Basics of Data" to strengthen your foundations.
 Otherwise, [skip to Design Recipe](#design-recipe).
@@ -1095,3 +1096,6 @@ of a string instead of displaying the *representation* of the string literal its
 ### What is an arithmetic step in stepwise evaluation?
 
 In our context, an arithmetic step has a broader meaning that just performing artihmetic on numbers. As described in [How to Design Program Section 1](http://www.ccs.neu.edu/home/matthias/HtDP2e/part_one.html#%28part._ch~3abasic-arithmetic%29), an arithmetic step is how one manipulate the values in a data type by some built-in operation. For example, the arithmetic of numbers includes addition and multiplication; the arithmetic of strings includes `string-append` and `substring`; the arithmetic of images includes `place-image` and `overlay/xy`. This also includes the [arithmetic of structs](#structs) that lets one construct a value of a struct through its constructor and extracts one of the fields through its selectors.
+
+### Is there going to be recursion on the first test?
+No.
