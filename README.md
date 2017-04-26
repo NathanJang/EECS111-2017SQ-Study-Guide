@@ -1095,7 +1095,39 @@ of a string instead of displaying the *representation* of the string literal its
 
 ### What is an arithmetic step in stepwise evaluation?
 
-In our context, an arithmetic step has a broader meaning that just performing artihmetic on numbers. As described in [How to Design Program Section 1](http://www.ccs.neu.edu/home/matthias/HtDP2e/part_one.html#%28part._ch~3abasic-arithmetic%29), an arithmetic step is how one manipulate the values in a data type by some built-in operation. For example, the arithmetic of numbers includes addition and multiplication; the arithmetic of strings includes `string-append` and `substring`; the arithmetic of images includes `place-image` and `overlay/xy`. This also includes the [arithmetic of structs](#structs) that lets one construct a value of a struct through its constructor and extracts one of the fields through its selectors.
+In our context, an arithmetic step has a broader meaning that just performing artihmetic on numbers. As described in [How to Design Program Section 1](http://www.ccs.neu.edu/home/matthias/HtDP2e/part_one.html#%28part._ch~3abasic-arithmetic%29), an arithmetic step is how one manipulate the values in a data type by some built-in operation. For example,
+
+- The arithmetic of numbers includes addition and multiplication
+
+  ```racket
+  (+ (sqr 3) (sqr 4))
+  ;; -[arith]->
+  (+ 9 (sqr 4))
+  ```
+
+- The arithmetic of strings includes `string-append` and `substring`
+
+  ```racket
+  (substring (string-append "hello" " \"" "world\"") 1 5)
+  ;; -[arith]->
+  (substring "hello \"world\"" 1 5)
+
+- The arithmetic of images includes `place-image` and `overlay/xy`
+
+  ```racket
+  (place-image (circle 5 "solid" "blue") 30 30 (empty-scene 50 50))
+  ;; -[arith]->
+  (place-image ... ; a blue dot image here
+               30 30 (empty-scene 50 50))
+  ```
+
+- The [arithmetic of structs](#structs) includes constructing a value of a struct through the constructor and extracting one of the fields through a selectors
+
+  ```racket
+  (make-posn (posn-y (make-posn 2017 111)) (posn-x (make-posn 2017 111)))
+  ;; -[arith]->
+  (make-posn 111 (posn-x (make-posn 2017 111)))
+  ```
 
 ### Is there going to be recursion on the first test?
 No.
