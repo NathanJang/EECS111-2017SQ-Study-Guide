@@ -31,6 +31,7 @@ Please refer to the [textbooks][Textbooks] for more complete content.
       - [Interval Decomposition](#interval-decomposition)
       - [Structural Decomposition](#structural-decomposition)
       - [Function Composition](#function-composition)
+      - [Domain Knowledge](#domain-knowledge)
     - [Testing](#testing)
   - [Stepwise Evaluation](#stepwise-evaluation)
   - [FAQ](#faq)
