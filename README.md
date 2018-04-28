@@ -1,4 +1,4 @@
-# Study Guide for [EECS 111, 2017 Spring Quarter][Course Page]
+# Study Guide for [EECS 111, 2018 Spring Quarter][Course Page]
 
 [Course Page]: http://users.eecs.northwestern.edu/~jesse/course/eecs111/
 [Textbooks]: http://users.eecs.northwestern.edu/~jesse/course/eecs111/#textbooks
@@ -1151,9 +1151,9 @@ In our context, an arithmetic step has a broader meaning that just performing ar
 - The [arithmetic of structs](#structs) includes constructing a value of a struct through the constructor and extracting one of the fields through a selectors
 
   ```racket
-  (make-posn (posn-y (make-posn 2017 111)) (posn-x (make-posn 2017 111)))
+  (make-posn (posn-y (make-posn 2018 111)) (posn-x (make-posn 2018 111)))
   ;; -[arith]->
-  (make-posn 111 (posn-x (make-posn 2017 111)))
+  (make-posn 111 (posn-x (make-posn 2018 111)))
   ```
 
 ### Is there going to be recursion on the first test?
