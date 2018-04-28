@@ -547,7 +547,7 @@ The strategies the professor gives you are:
 - [Interval Decomposition](#interval-decomposition)
 - [Structural Decomposition](#structural-decomposition)
 - [Function Composition](#function-composition)
-- Domain Knowledge
+- [Domain Knowledge](#domain-knowledge)
 
 #### Decision Tree
 A function using the decision tree strategy makes decisions on what to do based on the input data.
@@ -980,6 +980,32 @@ Example:
 ; and composes them into a `mean` function.)
 (define (mean a b)
   (/ (+ a b) 2))
+```
+#### Domain Knowledge
+Domain knowledge applies our understanding of subjects other than
+programming, translating concepts into code.
+
+The domain could be aerospace, baseball, calculus, dentistry, electrical
+engineering, finance, geometry, hospital management, medicine, natural
+language, physics, statistics, or whatever you care to write a program
+about.
+
+For example, here's a function where the domain of knowledge is beer
+brewing:
+
+```racket
+; calculate-abv : Number Number -> Number
+; Computes alcohol-by-volume from initial and final specific gravities.
+;
+; Examples:
+(check-within (calculate-abv 1.05 1.01) 5.3 0.1)
+(check-within (calculate-abv 1.05 1.02) 4.0 0.1)
+
+; Strategy: domain knowledge (brewing)
+(define (calculate-abv sg0 sg1)
+  (* BEER-ABV-RATIO (- sg0 sg1)))
+
+(define BEER-ABV-RATIO 133.62)
 ```
 
 ## Testing
