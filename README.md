@@ -88,7 +88,7 @@ Here are examples of data types (not data values):
 
 These are the main data types we use.
 
-**Important: To avoid confusion, you should always Captalize (CamelCase) the first letters of data type names when you work with them.**
+**Important: To avoid confusion, you should always Capitalize (CamelCase) the first letters of data type names when you work with them.**
 This distinguishes them from other variable names or function names in your code.
 
 ## Constants
