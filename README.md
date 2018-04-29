@@ -1,4 +1,4 @@
-# Study Guide for [EECS 111, 2017 Spring Quarter][Course Page]
+# Study Guide for [EECS 111, 2018 Spring Quarter][Course Page]
 
 [Course Page]: http://users.eecs.northwestern.edu/~jesse/course/eecs111/
 [Textbooks]: http://users.eecs.northwestern.edu/~jesse/course/eecs111/#textbooks
@@ -31,6 +31,7 @@ Please refer to the [textbooks][Textbooks] for more complete content.
       - [Interval Decomposition](#interval-decomposition)
       - [Structural Decomposition](#structural-decomposition)
       - [Function Composition](#function-composition)
+      - [Domain Knowledge](#domain-knowledge)
     - [Testing](#testing)
   - [Stepwise Evaluation](#stepwise-evaluation)
   - [FAQ](#faq)
@@ -88,7 +89,7 @@ Here are examples of data types (not data values):
 
 These are the main data types we use.
 
-**Important: To avoid confusion, you should always Captalize (CamelCase) the first letters of data type names when you work with them.**
+**Important: To avoid confusion, you should always Capitalize (CamelCase) the first letters of data type names when you work with them.**
 This distinguishes them from other variable names or function names in your code.
 
 ## Constants
@@ -547,7 +548,7 @@ The strategies the professor gives you are:
 - [Interval Decomposition](#interval-decomposition)
 - [Structural Decomposition](#structural-decomposition)
 - [Function Composition](#function-composition)
-- Domain Knowledge
+- [Domain Knowledge](#domain-knowledge)
 
 #### Decision Tree
 A function using the decision tree strategy makes decisions on what to do based on the input data.
@@ -981,6 +982,32 @@ Example:
 (define (mean a b)
   (/ (+ a b) 2))
 ```
+#### Domain Knowledge
+Domain knowledge applies our understanding of subjects other than
+programming, translating concepts into code.
+
+The domain could be aerospace, baseball, calculus, dentistry, electrical
+engineering, finance, geometry, hospital management, medicine, natural
+language, physics, statistics, or whatever you care to write a program
+about.
+
+For example, here's a function where the domain of knowledge is beer
+brewing:
+
+```racket
+; calculate-abv : Number Number -> Number
+; Computes alcohol-by-volume from initial and final specific gravities.
+;
+; Examples:
+(check-within (calculate-abv 1.05 1.01) 5.3 0.1)
+(check-within (calculate-abv 1.05 1.02) 4.0 0.1)
+
+; Strategy: domain knowledge (brewing)
+(define (calculate-abv sg0 sg1)
+  (* BEER-ABV-RATIO (- sg0 sg1)))
+
+(define BEER-ABV-RATIO 133.62)
+```
 
 ## Testing
 Finally, after you finish writing your function body, you should write tests for that function.
@@ -1124,9 +1151,9 @@ In our context, an arithmetic step has a broader meaning that just performing ar
 - The [arithmetic of structs](#structs) includes constructing a value of a struct through the constructor and extracting one of the fields through a selectors
 
   ```racket
-  (make-posn (posn-y (make-posn 2017 111)) (posn-x (make-posn 2017 111)))
+  (make-posn (posn-y (make-posn 2018 111)) (posn-x (make-posn 2018 111)))
   ;; -[arith]->
-  (make-posn 111 (posn-x (make-posn 2017 111)))
+  (make-posn 111 (posn-x (make-posn 2018 111)))
   ```
 
 ### Is there going to be recursion on the first test?
